@@ -43,7 +43,14 @@ INSERT INTO friendships (user_id, friend_id, created_at, updated_at)
 VALUES (6, 5, NOW(), NOW());
 
 --5--
+SELECT CONCAT_WS(" ", users.first_name, users.last_name) AS 'Nombre', 
+CONCAT_WS(" ", friend.first_name, friend.last_name) AS "Amigo" FROM users
+JOIN friendships ON users.id = friendships.user_id
+JOIN users AS friend ON friendships.friend_id = friend.id
+WHERE users.id = 2 
+ORDER BY friend.first_name ASC;
 
+--6--
 
 
 
