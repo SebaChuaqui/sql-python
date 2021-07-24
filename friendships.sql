@@ -52,5 +52,13 @@ ORDER BY friend.first_name ASC;
 
 --6--
 
+DELETE FROM friendships
+WHERE user_id = 2 AND friend_id = 5;
+
+--7--
+SELECT CONCAT_WS(" ", users.first_name, users.last_name) AS Usuario, 
+CONCAT_WS(" ", friend.first_name, friend.last_name) AS Amigo from users
+join friendships on users.id = friendships.user_id
+join users as friend on friendships.friend_id = friend.id;
 
 
