@@ -33,6 +33,16 @@ address.address AS 'Direccion'FROM customer
 JOIN address ON customer.address_id = address.address_id
 WHERE customer.store_id = 1 AND address.city_id IN (1, 42,312,459);
 
+--5--
+
+SELECT film.title AS 'Titulo', film.description AS 'Descripcion', film.release_year AS 'Estreno',
+film.rating AS 'Calificacion', film.special_features AS 'Caracteristicas' FROM film
+JOIN film_actor ON film.film_id = film_actor.film_id
+WHERE film_actor.actor_id = 15 AND film.rating = 'G' AND 
+film.special_features LIKE('%Behind the Scenes');
+
+
+
 
 
 
