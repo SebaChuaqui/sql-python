@@ -1,11 +1,11 @@
 use sakila;
 
 --1--
-select customer.first_name AS Nombre, customer.last_name AS Apellido, 
-customer.email AS Correo, address.address AS Direccion
-from customer
-join address on customer.address_id = address.address_id
-where address.city_id = 312;
+SELECT customer.first_name AS 'Nombre', customer.last_name AS 'Apellido', 
+customer.email AS 'Correo', address.address AS 'Direccion'
+FROM customer
+JOIN address on customer.address_id = address.address_id
+WHERE address.city_id = 312;
 
 --2--
 SELECT film.film_id AS ID, film.title AS Titulo, film.description AS Descripcion,
@@ -42,7 +42,7 @@ WHERE film_actor.actor_id = 15 AND film.rating = 'G' AND
 film.special_features LIKE('%Behind the Scenes');
 
 --6--
-SELECT film.film_id AS 'ID', film.title AS Titulo, actor.actor_id AS 'Actor ID',
+SELECT film.film_id AS 'ID', film.title AS 'Titulo', actor.actor_id AS 'Actor ID',
 CONCAT_WS(" ", actor.first_name, actor.last_name) AS 'Actor' FROM film
 JOIN film_actor ON film.film_id = film_actor.film_id
 JOIN actor ON film_actor.actor_id = actor.actor_id
@@ -50,6 +50,23 @@ WHERE film.film_id = 369;
 
 --7--
 
+SELECT film.title AS 'Titulo', film.description AS 'Descripcion', film.release_year AS 'Estreno',
+film.rating AS 'Calificacion', film.special_features AS 'Caracteristicas', category.name AS 'Genero'
+FROM category
+JOIN film_category ON category.category_id = film_category.category_id
+JOIN film ON film_category.film_id = film.film_id
+WHERE category.name = 'Drama' AND film.rental_rate = 2.99;
+
+--8--
+
+SELECT actor.actor_id AS 'Actor ID', film.title AS 'Titulo', film.description AS 'Descripcion', 
+film.release_year AS 'Estreno',film.rating AS 'Calificacion', film.special_features AS 'Caracteristicas', 
+category.name AS 'Genero', CONCAT_WS(" ", actor.first_name, actor.last_name) AS 'Actor' FROM category
+JOIN film_category ON category.category_id = film_category.category_id
+JOIN film ON film_category.film_id = film.film_id
+JOIN film_actor ON film.film_id = film_actor.film_id
+JOIN actor ON film_actor.actor_id = actor.actor_id
+WHERE CONCAT_WS(" ", actor.first_name, actor.last_name) = 'SANDRA KILMER' AND category.name = 'Action';
 
 
 
