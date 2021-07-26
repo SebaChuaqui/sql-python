@@ -6,12 +6,12 @@ FROM billing
 WHERE month(charged_datetime)=3 and year(charged_datetime)=2012;
 
 --2--
-SELECT billing.client_id AS 'Client ID', CONCAT(SUM(billing.amount)) 
+SELECT billing.client_id AS 'Cliente ID', CONCAT(SUM(billing.amount)) 
 AS 'Ingresos' FROM billing
 WHERE billing.client_id = 2;
 
 --3--
-SELECT sites.domain_name AS 'Sitios', sites.client_id AS 'Client ID' 
+SELECT sites.domain_name AS 'Sitios', sites.client_id AS 'Cliente ID' 
 FROM sites
 WHERE sites.client_id = 10;
 
@@ -46,3 +46,15 @@ GROUP BY CONCAT_WS(' ', clients.first_name, clients.last_name), clients.client_i
 ORDER BY clients.client_id;
 
 --7--
+SELECT CONCAT_WS(' ', clients.first_name, clients.last_name) AS 'Cliente', COUNT(leads.leads_id) AS 'Total', 
+DATE_FORMAT(leads.registered_datetime, '%M') AS 'Mes' FROM clients
+LEFT JOIN sites ON clients.client_id = sites.client_id
+LEFT JOIN leads ON sites.site_id = leads.site_id
+WHERE EXTRACT(MONTH FROM leads.registered_datetime) >= 1 
+AND EXTRACT(MONTH FROM leads.registered_datetime) <= 6 
+AND DATE_FORMAT(leads.registered_datetime, '%Y') = '2011'
+GROUP BY CONCAT_WS(' ', clients.first_name, clients.last_name), leads.registered_datetime
+ORDER BY leads.registered_datetime;
+
+--8--
+
