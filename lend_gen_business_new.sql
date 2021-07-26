@@ -30,10 +30,11 @@ FROM sites WHERE client_id=20
 GROUP BY client_id, month_created, year_created;
 
 --5--
-SELECT a.domain_name AS 'Nombre Dominio', count(leads_id) AS 'Contador' 
+SELECT a.domain_name AS 'Nombre Dominio', count(leads_id) AS 'Contador', 
+CONCAT(MONTHNAME(b.registered_datetime), ' ', DAY(b.registered_datetime), ', ', YEAR(b.registered_datetime))
 FROM sites a, leads b WHERE a.site_id = b.site_id 
 AND b.registered_datetime BETWEEN "2011-1-1" AND "2011-2-15"
-GROUP BY a.domain_name;
+GROUP BY a.domain_name, b.registered_datetime;
 
 --6-- 
 SELECT CONCAT_WS(' ', clients.first_name, clients.last_name) AS 'Cliente', COUNT(leads.leads_id) AS 'Total' 
@@ -56,5 +57,9 @@ AND DATE_FORMAT(leads.registered_datetime, '%Y') = '2011'
 GROUP BY CONCAT_WS(' ', clients.first_name, clients.last_name), leads.registered_datetime
 ORDER BY leads.registered_datetime;
 
---8--
+--8a--
+SELECT CONCAT_WS(' ', clients.first_name, clients.last_name) AS 'Cliente', 
+sites.domain_name AS 'Sitio', COUNT(leads.leads_id) AS 'Total',
+DATE_FORMAT(leads.registered_datetime, '%m %d, %Y') AS 'Fecha Generada' FROM clients
+l
 
