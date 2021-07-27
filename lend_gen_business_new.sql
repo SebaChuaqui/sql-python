@@ -1,9 +1,10 @@
 use lead_gen_business;
 
 --1--
-SELECT SUM(amount) AS 'Ingresos Totales'
+SELECT MONTHNAME(billing.charged_datetime), SUM(billing.amount) AS 'Ingresos Totales'
 FROM billing 
-WHERE month(charged_datetime)=3 and year(charged_datetime)=2012;
+WHERE charged_datetime BETWEEN '2012-03-01' AND '2012-03-31'
+GROUP BY MONTHNAME(billing.charged_datetime);
 
 --2--
 SELECT billing.client_id AS 'Cliente ID', CONCAT(SUM(billing.amount)) 
@@ -32,6 +33,7 @@ GROUP BY client_id, month_created, year_created;
 --5--
 SELECT a.domain_name AS 'Nombre Dominio', count(leads_id) AS 'Contador', 
 CONCAT(MONTHNAME(b.registered_datetime), ' ', DAY(b.registered_datetime), ', ', YEAR(b.registered_datetime))
+AS 'Fecha Generada'
 FROM sites a, leads b WHERE a.site_id = b.site_id 
 AND b.registered_datetime BETWEEN "2011-1-1" AND "2011-2-15"
 GROUP BY a.domain_name, b.registered_datetime;
@@ -58,8 +60,10 @@ GROUP BY CONCAT_WS(' ', clients.first_name, clients.last_name), leads.registered
 ORDER BY leads.registered_datetime;
 
 --8a--
-SELECT CONCAT_WS(' ', clients.first_name, clients.last_name) AS 'Cliente', 
-sites.domain_name AS 'Sitio', COUNT(leads.leads_id) AS 'Total',
-DATE_FORMAT(leads.registered_datetime, '%m %d, %Y') AS 'Fecha Generada' FROM clients
-l
+SELECT CONCAT(a.first_name,' ', a.last_name) AS 'Cliente', 
+b.domain_name AS 'Sitio Web', count(c.leads_id) AS 'Total'
+FROM clients a, sites b, leads c 
+WHERE a.client_id = b.client_id AND b.site_id=c.site_id  
+AND c.registered_datetime BETWEEN "2011-1-1" AND "2011-12-31"
+GROUP BY a.first_name, a.last_name, b.domain_name;
 
