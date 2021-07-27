@@ -62,6 +62,12 @@ GROUP BY CONCAT_WS(' ', clients.first_name, clients.last_name), leads.registered
 ORDER BY leads.registered_datetime;
 
 --8a--
+SELECT CONCAT(a.first_name,' ', a.last_name) AS 'Cliente', 
+b.domain_name AS 'Sitio Web', count(c.leads_id) AS 'Total' 
+FROM clients a, sites b, leads c 
+WHERE a.client_id = b.client_id AND b.site_id=c.site_id  
+AND c.registered_datetime BETWEEN "2011-1-1" AND "2011-12-31"
+GROUP BY a.first_name, a.last_name, b.domain_name;
 
-
+--8b--
 
