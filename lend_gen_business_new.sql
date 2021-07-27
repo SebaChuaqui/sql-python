@@ -7,8 +7,8 @@ WHERE charged_datetime BETWEEN '2012-03-01' AND '2012-03-31'
 GROUP BY MONTHNAME(billing.charged_datetime);
 
 --2--
-SELECT billing.client_id AS 'Cliente ID', CONCAT(SUM(billing.amount)) 
-AS 'Ingresos' FROM billing
+SELECT billing.client_id AS 'Cliente ID', CONCAT(SUM(billing.amount)) AS 'Ingresos' 
+FROM billing
 WHERE billing.client_id = 2;
 
 --3--
