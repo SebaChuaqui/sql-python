@@ -80,6 +80,12 @@ JOIN leads ON sites.site_id = leads.site_id
 GROUP BY sites.client_id, sites.site_id;
 
 --9--
-
+SELECT CONCAT(clients.first_name, ' ', clients.last_name) AS 'Cliente',
+SUM(amount) as 'Total', MONTHNAME(billing.charged_datetime) as 'Mes',
+YEAR(billing.charged_datetime) as 'Año'
+FROM clients
+JOIN billing ON clients.client_id = billing.client_id
+GROUP BY clients.client_id, billing.charged_datetime
+ORDER BY clients.client_id, billing.charged_datetime;
 
 
