@@ -1,7 +1,7 @@
 use lead_gen_business;
 
 --1--
-SELECT MONTHNAME(billing.charged_datetime), SUM(billing.amount) AS 'Ingresos Totales'
+SELECT MONTHNAME(billing.charged_datetime) AS 'Mes', SUM(billing.amount) AS 'Ingresos Totales'
 FROM billing 
 WHERE charged_datetime BETWEEN '2012-03-01' AND '2012-03-31'
 GROUP BY MONTHNAME(billing.charged_datetime);
@@ -17,18 +17,20 @@ FROM sites
 WHERE sites.client_id = 10;
 
 --4a--
-SELECT client_id, count(*) AS 'N° Sitio Web', 
+SELECT client_id, count(*) AS 'Numero de Sitio', 
 DATE_FORMAT(created_datetime, "%M") month_created, 
 DATE_FORMAT(created_datetime, "%Y") year_created
-FROM sites WHERE client_id=1
+FROM sites
+WHERE client_id=1
 GROUP BY client_id, month_created, year_created;
 
 --4b--
-SELECT client_id, count(*) AS 'N° Sitio Web', 
-DATE_FORMAT(created_datetime, "%M") month_created, 
-DATE_FORMAT(created_datetime, "%Y") year_created
-FROM sites WHERE client_id=20
-GROUP BY client_id, month_created, year_created;
+SELECT client_id, COUNT(domain_name) AS 'Sitios', 
+MONTHNAME(created_datetime) AS 'Mes', YEAR(created_datetime) AS 'Año'
+FROM sites
+WHERE client_id = 20
+GROUP BY client_id, created_datetime;
+
 
 --5--
 SELECT a.domain_name AS 'Nombre Dominio', count(leads_id) AS 'Contador', 
@@ -60,5 +62,6 @@ GROUP BY CONCAT_WS(' ', clients.first_name, clients.last_name), leads.registered
 ORDER BY leads.registered_datetime;
 
 --8a--
+
 
 
