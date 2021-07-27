@@ -88,4 +88,13 @@ JOIN billing ON clients.client_id = billing.client_id
 GROUP BY clients.client_id, billing.charged_datetime
 ORDER BY clients.client_id, billing.charged_datetime;
 
+--10--
+SELECT CONCAT_WS(' ', clients.first_name, clients.last_name) AS 'Cliente', 
+GROUP_CONCAT(sites.domain_name ORDER BY sites.domain_name ASC SEPARATOR ' / ') AS 'Sitio'
+FROM clients
+LEFT JOIN sites ON clients.client_id = sites.client_id
+GROUP BY clients.client_id;
+
+
+
 
