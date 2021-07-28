@@ -17,12 +17,11 @@ FROM sites
 WHERE sites.client_id = 10;
 
 --4a--
-SELECT client_id, count(*) AS 'Numero de Sitio', 
-DATE_FORMAT(created_datetime, "%M") month_created, 
-DATE_FORMAT(created_datetime, "%Y") year_created
+SELECT client_id, COUNT(domain_name) AS 'N° de Sitios', 
+MONTHNAME(created_datetime) AS 'Mes', YEAR(created_datetime) AS 'Año'
 FROM sites
-WHERE client_id=1
-GROUP BY client_id, month_created, year_created;
+WHERE client_id = 1 
+GROUP BY client_id, created_datetime;
 
 --4b--
 SELECT client_id, COUNT(domain_name) AS 'Sitios', 
@@ -82,13 +81,13 @@ GROUP BY clients.client_id, sites.domain_name, sites.site_id
 ORDER BY clients.client_id, sites.site_id;
 
 --9--
-SELECT CONCAT(clients.first_name, ' ', clients.last_name) AS 'Cliente',
-SUM(amount) as 'Total', MONTHNAME(billing.charged_datetime) as 'Mes',
-YEAR(billing.charged_datetime) as 'Año'
-FROM clients
-JOIN billing ON clients.client_id = billing.client_id
-GROUP BY clients.client_id, billing.charged_datetime
-ORDER BY clients.client_id, billing.charged_datetime;
+SELECT CONCAT(clients.first_name, ' ' , clients.last_name) AS 'Cliente', SUM(billing.amount) AS 'Total',
+DATE_FORMAT(billing.charged_datetime, '%M') AS 'Mes',
+DATE_FORMAT(billing.charged_datetime, '%Y') AS 'Año'
+FROM billing
+LEFT JOIN clients ON billing.client_id = clients.client_id
+group by clients.client_id, Mes, Año
+order by clients.client_id, Mes, Año desc;
 
 --10--
 SELECT CONCAT_WS(' ', clients.first_name, clients.last_name) AS 'Cliente', 
