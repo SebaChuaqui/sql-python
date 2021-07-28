@@ -72,12 +72,14 @@ WHERE registered_datetime BETWEEN '2011/01/01' AND '2011/12/31'
 GROUP BY sites.client_id, sites.site_id;
 
 --8b--
-SELECT CONCAT(clients.first_name, ' ', clients.last_name) AS 'Cliente', sites.domain_name AS 'Dominio',
+SELECT CONCAT(clients.first_name, ' ' , clients.last_name) AS 'Cliente', 
+COALESCE(sites.domain_name) as 'Sitio',
 COUNT(leads.leads_id) AS 'Total'
 FROM clients
-JOIN sites ON clients.client_id = sites.client_id
-JOIN leads ON sites.site_id = leads.site_id
-GROUP BY sites.client_id, sites.site_id;
+LEFT JOIN sites ON clients.client_id = sites.client_id
+LEFT JOIN leads on sites.site_id = leads.site_id
+GROUP BY clients.client_id, sites.domain_name, sites.site_id
+ORDER BY clients.client_id, sites.site_id;
 
 --9--
 SELECT CONCAT(clients.first_name, ' ', clients.last_name) AS 'Cliente',
@@ -94,6 +96,11 @@ GROUP_CONCAT(sites.domain_name ORDER BY sites.domain_name DESC SEPARATOR ' / ') 
 FROM clients
 LEFT JOIN sites ON clients.client_id = sites.client_id
 GROUP BY clients.client_id;
+
+
+
+
+
 
 
 
